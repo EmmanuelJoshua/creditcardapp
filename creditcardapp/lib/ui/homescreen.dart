@@ -1,7 +1,10 @@
-import 'package:flashy_tab_bar/flashy_tab_bar.dart';
+//import 'package:flashy_tab_bar/flashy_tab_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:paymentsystem/model/cardmodel.dart';
+import 'package:paymentsystem/ui/addcard.dart';
+import 'package:paymentsystem/widgets/creditcard.dart';
+import 'package:paymentsystem/widgets/transactionitem.dart';
 
 import '../customIcons.dart';
 
@@ -14,12 +17,20 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   PageController _pageController;
-  int _selectedIndex = 0;
+  int initialPage = 1;
+  Map<int, Map<String, String>> transactions;
+
+  loadTransactions(int index) {
+    setState(() {
+      transactions = CardModel.transaction[index];
+    });
+  }
 
   @override
   void initState() {
     super.initState();
-    _pageController = PageController(initialPage: 1, viewportFraction: 0.85);
+//    loadTransactions(initialPage);
+    _pageController = PageController(initialPage: initialPage, viewportFraction: 0.85);
   }
 
   @override
@@ -40,56 +51,58 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           actions: <Widget>[
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).push(AddCard());
+              },
               icon: Icon(Icons.add_circle_outline),
               color: Color(0xFF008BFE),
             )
           ],
         ),
-        bottomNavigationBar: FlashyTabBar(
-            animationCurve: Curves.linear,
-            showElevation: true,
-            selectedIndex: _selectedIndex,
-            onItemSelected: (index) => setState(() {
-                  _selectedIndex = index;
-                }),
-            items: [
-              FlashyTabBarItem(
-                  icon: Icon(CustomIcons.home),
-                  title: Text('Home',
-                      style: TextStyle(
-                        fontFamily: 'Fira',
-                        fontSize: 13,
-                      ))),
-              FlashyTabBarItem(
-                  icon: Icon(Icons.import_export),
-                  title: Text('Transfers',
-                      style: TextStyle(
-                        fontFamily: 'Fira',
-                        fontSize: 13,
-                      ))),
-              FlashyTabBarItem(
-                  icon: Icon(Icons.show_chart),
-                  title: Text('Charts',
-                      style: TextStyle(
-                        fontFamily: 'Fira',
-                        fontSize: 13,
-                      ))),
-              FlashyTabBarItem(
-                  icon: Icon(Icons.settings),
-                  title: Text('Settings',
-                      style: TextStyle(
-                        fontFamily: 'Fira',
-                        fontSize: 13,
-                      ))),
-              FlashyTabBarItem(
-                  icon: Icon(Icons.person),
-                  title: Text('User',
-                      style: TextStyle(
-                        fontFamily: 'Fira',
-                        fontSize: 13,
-                      ))),
-            ]),
+//        bottomNavigationBar: FlashyTabBar(
+//            animationCurve: Curves.linear,
+//            showElevation: true,
+//            selectedIndex: _selectedIndex,
+//            onItemSelected: (index) => setState(() {
+//                  _selectedIndex = index;
+//                }),
+//            items: [
+//              FlashyTabBarItem(
+//                  icon: Icon(CustomIcons.home),
+//                  title: Text('Home',
+//                      style: TextStyle(
+//                        fontFamily: 'Fira',
+//                        fontSize: 13,
+//                      ))),
+//              FlashyTabBarItem(
+//                  icon: Icon(Icons.import_export),
+//                  title: Text('Transfers',
+//                      style: TextStyle(
+//                        fontFamily: 'Fira',
+//                        fontSize: 13,
+//                      ))),
+//              FlashyTabBarItem(
+//                  icon: Icon(Icons.show_chart),
+//                  title: Text('Charts',
+//                      style: TextStyle(
+//                        fontFamily: 'Fira',
+//                        fontSize: 13,
+//                      ))),
+//              FlashyTabBarItem(
+//                  icon: Icon(Icons.settings),
+//                  title: Text('Settings',
+//                      style: TextStyle(
+//                        fontFamily: 'Fira',
+//                        fontSize: 13,
+//                      ))),
+//              FlashyTabBarItem(
+//                  icon: Icon(Icons.person),
+//                  title: Text('User',
+//                      style: TextStyle(
+//                        fontFamily: 'Fira',
+//                        fontSize: 13,
+//                      ))),
+//            ]),
         backgroundColor: backgroundColor,
         body: Column(
           children: <Widget>[
@@ -98,13 +111,16 @@ class _HomeScreenState extends State<HomeScreen> {
               width: double.infinity,
               child: PageView.builder(
                 controller: _pageController,
-                itemCount: 3,
+                itemCount: CardModel.cards.length,
+                physics: BouncingScrollPhysics(),
                 onPageChanged: (int index) {
                   debugPrint('$index');
-                  cardDetails(index);
+                  loadTransactions(index);
+//                  cardDetails(index);
                 },
                 itemBuilder: (BuildContext context, int index) {
-                  return _cardSelector(index);
+                  return CreditCard(
+                      pageController: _pageController, index: index);
                 },
               ),
             ),
@@ -141,287 +157,17 @@ class _HomeScreenState extends State<HomeScreen> {
                       color: Color(0xFFC2CDCC),
                       fontWeight: FontWeight.w600)),
             ),
-
             Expanded(
-              child: ListView(
-                children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.only(left: 15, right: 15, bottom: 15, top: 8),
-                    decoration: BoxDecoration(
-                      color: Color(0xFFFFFFFF),
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    child: ListTile(
-                      leading: CircleAvatar(
-                        backgroundColor: Color(0xFFE9FBFD),
-                        child: Icon(
-                          Icons.fastfood,
-                          color: Color(0xFF1D2F3D),
-                          size: 18,
-                        ),
-                      ),
-                      title: Text('Chicken Nuggets',
-                          style: TextStyle(
-                              fontFamily: 'Fira',
-                              fontSize: 14,
-                              color: Color(0xFF232B3E),
-                              fontWeight: FontWeight.w600)),
-                      subtitle: Text('McDonalds',
-                          style: TextStyle(
-                              fontFamily: 'Fira',
-                              fontSize: 13,
-                              color: Color(0xFFC2CDCC),
-                              fontWeight: FontWeight.w600)),
-                      trailing: Text('-50 \$',
-                          style: TextStyle(
-                              fontFamily: 'Fira',
-                              fontSize: 14,
-                              color: Color(0xFFE67095),
-                              fontWeight: FontWeight.w600)),
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(left: 15, right: 15, bottom: 15),
-                    decoration: BoxDecoration(
-                      color: Color(0xFFFFFFFF),
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    child: ListTile(
-                      leading: CircleAvatar(
-                        backgroundColor: Color(0xFFE9FBFD),
-                        child: Icon(
-                          Icons.laptop_mac,
-                          color: Color(0xFF1D2F3D),
-                          size: 18,
-                        ),
-                      ),
-                      title: Text('MacBook Pro 15\'',
-                          style: TextStyle(
-                              fontFamily: 'Fira',
-                              fontSize: 14,
-                              color: Color(0xFF232B3E),
-                              fontWeight: FontWeight.w600)),
-                      subtitle: Text('Apple',
-                          style: TextStyle(
-                              fontFamily: 'Fira',
-                              fontSize: 13,
-                              color: Color(0xFFC2CDCC),
-                              fontWeight: FontWeight.w600)),
-                      trailing: Text('-2800 \$',
-                          style: TextStyle(
-                              fontFamily: 'Fira',
-                              fontSize: 14,
-                              color: Color(0xFFE67095),
-                              fontWeight: FontWeight.w600)),
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(left: 15, right: 15, bottom: 10),
-                    decoration: BoxDecoration(
-                      color: Color(0xFFFFFFFF),
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    child: ListTile(
-                      leading: CircleAvatar(
-                        backgroundColor: Color(0xFFE9FBFD),
-                        child: Icon(
-                          Icons.local_drink,
-                          color: Color(0xFF1D2F3D),
-                          size: 18,
-                        ),
-                      ),
-                      title: Text('Coffee',
-                          style: TextStyle(
-                              fontFamily: 'Fira',
-                              fontSize: 14,
-                              color: Color(0xFF232B3E),
-                              fontWeight: FontWeight.w600)),
-                      subtitle: Text('Starbucks',
-                          style: TextStyle(
-                              fontFamily: 'Fira',
-                              fontSize: 13,
-                              color: Color(0xFFC2CDCC),
-                              fontWeight: FontWeight.w600)),
-                      trailing: Text('-19.54 \$',
-                          style: TextStyle(
-                              fontFamily: 'Fira',
-                              fontSize: 14,
-                              color: Color(0xFFE67095),
-                              fontWeight: FontWeight.w600)),
-                    ),
-                  )
-                ],
+              child: ListView.builder(
+                itemCount: 3,
+                padding: const EdgeInsets.only(top: 10, left: 3, right: 5),
+                physics: BouncingScrollPhysics(),
+                itemBuilder: (context, index) {
+                  return TransactionItem(transactions: transactions);
+                },
               ),
             )
-
-            //TODO: History Implementation
-
           ],
         ));
-  }
-
-  _cardSelector(int index) {
-    return AnimatedBuilder(
-      animation: _pageController,
-      builder: (BuildContext context, Widget widget) {
-        double value = 1;
-        if (_pageController.position.haveDimensions) {
-          value = _pageController.page - index;
-          value = (1 - (value.abs() * 0.35) + 0.01).clamp(0.0, 1.0);
-        }
-        return Center(
-          child: SizedBox(
-            height: Curves.easeInOut.transform(value) * 270,
-            width: Curves.easeInOut.transform(value) * 400,
-            child: widget,
-          ),
-        );
-      },
-      child: Stack(
-        children: <Widget>[
-          Center(
-            child: Container(
-              margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.00),
-              padding: EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                  color: Color(0xFF232B3E),
-                  gradient: LinearGradient(colors: [
-                    Color(0xFF354360),
-                    Color(0xFF232B3E),
-                  ], begin: Alignment.topLeft, end: Alignment.bottomRight),
-                  borderRadius: BorderRadius.circular(15.0),
-                  boxShadow: [
-                    BoxShadow(
-                        color: Color(0xFF95DFFF),
-                        blurRadius: 10.0,
-                        offset: Offset(10.0, 10.0))
-                  ]),
-              child: Center(
-                  child: Column(
-                children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.only(top: 5),
-                        child: RichText(
-                          text: TextSpan(text: '', children: [
-                            new TextSpan(children: [
-                              TextSpan(
-                                  text: 'Current Balance\n',
-                                  style: TextStyle(
-                                      color: Color(0xFFD5DDDC),
-                                      fontSize: 12,
-                                      fontFamily: 'Fira',
-                                      height: 0.1,
-                                      fontWeight: FontWeight.w500)),
-                              TextSpan(
-                                  text: '\$12,432.32',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 22,
-                                      fontFamily: 'Fira',
-                                      height: 1.3,
-                                      fontWeight: FontWeight.w500)),
-                            ])
-                          ]),
-                        ),
-                      ),
-                      RichText(
-                        text: TextSpan(text: '', children: [
-                          new TextSpan(children: [
-                            TextSpan(
-                                text: 'Bank',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 13,
-                                    fontFamily: 'Fira',
-                                    height: 0.1,
-                                    fontWeight: FontWeight.w500)),
-                            TextSpan(
-                                text: ' X',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 15,
-                                    fontFamily: 'Fira',
-                                    fontWeight: FontWeight.w600)),
-                          ])
-                        ]),
-                      ),
-                    ],
-                  ),
-                  Expanded(
-                    child: Container(
-                      alignment: Alignment.centerLeft,
-                      child: Text('**** **** **** 0141',
-                          style: TextStyle(
-                              letterSpacing: 4,
-                              color: Colors.white,
-                              fontSize: 18,
-                              fontFamily: 'Fira',
-                              fontWeight: FontWeight.w600)),
-                    ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      RichText(
-                        text: TextSpan(text: '', children: [
-                          new TextSpan(children: [
-                            TextSpan(
-                                text: 'Card Holder\n',
-                                style: TextStyle(
-                                    color: Color(0xFFD5DDDC),
-                                    fontSize: 12,
-                                    fontFamily: 'Fira',
-                                    height: 0.1,
-                                    fontWeight: FontWeight.w500)),
-                            TextSpan(
-                                text: 'Laurel Bailey',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 16,
-                                    fontFamily: 'Fira',
-                                    height: 1.3,
-                                    fontWeight: FontWeight.w500)),
-                          ])
-                        ]),
-                      ),
-                      RichText(
-                        text: TextSpan(text: '', children: [
-                          new TextSpan(children: [
-                            TextSpan(
-                                text: 'Expires\n',
-                                style: TextStyle(
-                                    color: Color(0xFFD5DDDC),
-                                    fontSize: 12,
-                                    fontFamily: 'Fira',
-                                    height: 0.1,
-                                    fontWeight: FontWeight.w500)),
-                            TextSpan(
-                                text: '05/22',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 16,
-                                    fontFamily: 'Fira',
-                                    height: 1.3,
-                                    fontWeight: FontWeight.w500)),
-                          ])
-                        ]),
-                      ),
-                      Image.asset(
-                        'assets/images/mastercard.png',
-                        width: 28,
-                        height: 28,
-                      )
-                    ],
-                  )
-                ],
-              )),
-            ),
-          )
-        ],
-      ),
-    );
   }
 }

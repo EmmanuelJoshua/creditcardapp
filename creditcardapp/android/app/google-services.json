@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "913372789786",
+    "firebase_url": "https://creditcardapp-6d907.firebaseio.com",
+    "project_id": "creditcardapp-6d907",
+    "storage_bucket": "creditcardapp-6d907.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:913372789786:android:9d33b89a96629235ba25a3",
+        "android_client_info": {
+          "package_name": "com.example.paymentsystem"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "913372789786-m7dd6vjkavdjklfljaminfcmaofeh7se.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.paymentsystem",
+            "certificate_hash": "24cbad591475e7313f642197d10cc2ff2971d4bb"
+          }
+        },
+        {
+          "client_id": "913372789786-ji30nt7j80mibjpej536f8gcg8mb3kcc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAuocbLf5jhXcucYDn_uTKbeucXApfIAVk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "913372789786-ji30nt7j80mibjpej536f8gcg8mb3kcc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

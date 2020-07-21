@@ -1,21 +1,56 @@
 import 'package:flutter/material.dart';
 
-Future<Map> cardModel(int index) {
-  Future<Map> cardfuture;
-  String cardholder;
-  String expirydate;
-  String userbalance;
-  String cardNumber;
+class CardModel{
+  static Map<int, Map<String, String>> cards = {
+    0: {
+      'CardHolder' : 'Joshua',
+      'ExpiryDate': '12/20',
+      'UserBalance': '3,000',
+      'CardNumber': '**** **** **** 3435'
+    },
+    1: {
+      'CardHolder' : 'Praise',
+      'ExpiryDate': '09/20',
+      'UserBalance': '4,000',
+      'CardNumber': '**** **** **** 5245'
+    },
+    2: {
+      'CardHolder' : 'Jeremiah',
+      'ExpiryDate': '06/20',
+      'UserBalance': '5,000',
+      'CardNumber': '**** **** **** 5439'
+    },
+    3: {
+      'CardHolder' : 'Blessing',
+      'ExpiryDate': '09/20',
+      'UserBalance': '6,000',
+      'CardNumber': '**** **** **** 4398'
+    },
+    4:{
+      'CardHolder' : 'Israel',
+      'ExpiryDate': '07/20',
+      'UserBalance': '10,000',
+      'CardNumber': '**** **** **** 1732'
+    }
+  };
 
-  return null;
-}
-
-cardDetails(int index) {
-  Future<Map> cardfuture;
-  var cardholder = ["Joshua", "Praise", "Jeremiah"];
-  var expirydate = ["12/20", "9/20", "6/20"];
-  var userbalance = ["3,000", "4,000", "5,000"];
-  var cardNumber = ["4354545454", "566454423", "343563534"];
-
-  print(cardholder[index] + '\n' + expirydate[index] + '\n' + userbalance[index] + '\n' + cardNumber[index]);
+  static Map<int, Map<int, Map<String, String>>> transaction = {
+    0:{
+      0:{
+        'ProductName':'Coffee',
+        'Company':'Starbucks',
+        'Amount': '-19.54 \$'
+      },
+      1: {
+        'ProductName':'Chicken Nuggets',
+        'Company':'McDonalds',
+        'Amount': '-50 \$'
+      },
+      2: {
+        'ProductName':'MacBook Pro 15',
+        'Company':'Apple',
+        'Amount': '-2000 \$'
+      }
+    }
+  };
 }
