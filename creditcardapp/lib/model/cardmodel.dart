@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class CardModel{
   static Map<int, Map<String, String>> cards = {
     0: {

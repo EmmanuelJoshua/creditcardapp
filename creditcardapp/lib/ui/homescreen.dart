@@ -1,6 +1,7 @@
-//import 'package:flashy_tab_bar/flashy_tab_bar.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:paymentsystem/model/card.dart';
 import 'package:paymentsystem/model/cardmodel.dart';
 import 'package:paymentsystem/ui/addcard.dart';
 import 'package:paymentsystem/widgets/creditcard.dart';
@@ -19,6 +20,9 @@ class _HomeScreenState extends State<HomeScreen> {
   PageController _pageController;
   int initialPage = 1;
   Map<int, Map<String, String>> transactions;
+  List<Cards> credits = List();
+  final FirebaseDatabase database = FirebaseDatabase.instance;
+  DatabaseReference databaseReference;
 
   loadTransactions(int index) {
     setState(() {
@@ -29,8 +33,16 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-//    loadTransactions(initialPage);
-    _pageController = PageController(initialPage: initialPage, viewportFraction: 0.85);
+    _pageController =
+        PageController(initialPage: initialPage, viewportFraction: 0.85);
+    databaseReference = database.reference().child('credit_cards');
+    databaseReference.onChildAdded.listen(onEntryAdded);
+  }
+
+  onEntryAdded(Event event){
+    setState(() {
+      credits.add(Cards.fromSnapshot(event.snapshot));
+    });
   }
 
   @override
@@ -111,7 +123,7 @@ class _HomeScreenState extends State<HomeScreen> {
               width: double.infinity,
               child: PageView.builder(
                 controller: _pageController,
-                itemCount: CardModel.cards.length,
+                itemCount: credits.length,
                 physics: BouncingScrollPhysics(),
                 onPageChanged: (int index) {
                   debugPrint('$index');
@@ -120,7 +132,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
                 itemBuilder: (BuildContext context, int index) {
                   return CreditCard(
-                      pageController: _pageController, index: index);
+                      pageController: _pageController, index: index, credits: credits,);
                 },
               ),
             ),

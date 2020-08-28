@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:paymentsystem/model/card.dart';
 import 'package:paymentsystem/model/cardmodel.dart';
 
 class CreditCard extends StatelessWidget {
   const CreditCard({
     Key key,
     @required PageController pageController,
-    @required this.index,
+    @required this.index, this.credits,
   })  : _pageController = pageController,
         super(key: key);
 
   final PageController _pageController;
   final int index;
+  final List<Cards> credits;
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +71,7 @@ class CreditCard extends StatelessWidget {
                                       height: 0.1,
                                       fontWeight: FontWeight.w500)),
                               TextSpan(
-                                  text: '\$${CardModel.cards[index]['UserBalance']}',
+                                  text: '\$${credits[index].userBalance}',
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 22,
@@ -106,7 +108,7 @@ class CreditCard extends StatelessWidget {
                   Expanded(
                     child: Container(
                       alignment: Alignment.centerLeft,
-                      child: Text('${CardModel.cards[index]['CardNumber']}',
+                      child: Text('${credits[index].cardNumber}',
                           style: TextStyle(
                               letterSpacing: 4,
                               color: Colors.white,
@@ -130,7 +132,7 @@ class CreditCard extends StatelessWidget {
                                     height: 0.1,
                                     fontWeight: FontWeight.w500)),
                             TextSpan(
-                                text: CardModel.cards[index]['CardHolder'],
+                                text: credits[index].cardHolder,
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 16,
@@ -152,7 +154,7 @@ class CreditCard extends StatelessWidget {
                                     height: 0.1,
                                     fontWeight: FontWeight.w500)),
                             TextSpan(
-                                text: '${CardModel.cards[index]['ExpiryDate']}',
+                                text: '${credits[index].expiryDate}',
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 16,
