@@ -15,6 +15,7 @@ dependencies:
   firebase_core: ^0.4.5
   firebase_database: ^3.1.6
   hive: ^1.4.4
+  lottie: any
 #  flashy_tab_bar: ^0.0.3
 
 dev_dependencies:
@@ -27,6 +28,7 @@ flutter:
 
   assets:
     - assets/images/mastercard.png
+    - assets/images/payanim.json
 
   fonts:
   - family: Fira
