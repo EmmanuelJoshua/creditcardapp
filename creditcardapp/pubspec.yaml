@@ -16,6 +16,7 @@ dependencies:
   firebase_database: ^3.1.6
   hive: ^1.4.4
   lottie: any
+  provider: any
 #  flashy_tab_bar: ^0.0.3
 
 dev_dependencies:

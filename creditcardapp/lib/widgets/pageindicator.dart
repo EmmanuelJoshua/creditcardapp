@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:paymentsystem/providers/indexnotifiers.dart';
+import 'package:provider/provider.dart';
 
 class PageIndicator extends StatefulWidget {
-  PageIndicator({this.selectedIndex});
-
-  final int selectedIndex;
   @override
   _PageIndicatorState createState() => _PageIndicatorState();
 }
@@ -24,11 +23,14 @@ class _PageIndicatorState extends State<PageIndicator> {
 
   @override
   Widget build(BuildContext context) {
+
+    final selectedIndex = Provider.of<IndexNotifier>(context).index;
+
     List<Widget> _buildIndicators() {
       List<Widget> indicators = new List();
 
       for (int i = 0; i < 2; i++) {
-        indicators.add(i == widget.selectedIndex
+        indicators.add(i == selectedIndex
             ? _isIndicator(true)
             : _isIndicator(false));
       }
